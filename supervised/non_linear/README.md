@@ -53,9 +53,13 @@ This means we can still use linear classification algorithms like linear SVMs, l
 - **Training difficulty**: Learning algorithms for non-linear classifiers often involve non-convex optimization, which can be computationally challenging and prone to getting stuck in local optima.
 - **Overfitting risk**: Non-linear models can overfit the training data if not properly regularized.
 
+
+
+Choosing the optimal approach depends on the specific characteristics of your dataset, problem complexity, and desired trade-offs between simplicity, flexibility, and accuracy.
+
 Option 1: Non-Linear features with a linear model
 Ideal for: Situations where ease of training and interpretability are prioritized.
+
 Option 2: Fully Non-Linear Models
 Ideal for: Situations where utmost flexibility and accuracy are crucial, even if it comes at the expense of harder training and reduced interpretability.
 
-Choosing the optimal approach depends on the specific characteristics of your dataset, problem complexity, and desired trade-offs between simplicity, flexibility, and accuracy.
