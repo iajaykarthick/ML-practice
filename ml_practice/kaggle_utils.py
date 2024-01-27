@@ -5,7 +5,8 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 def download_and_setup_dataset(dataset_name):
     sub_folder = dataset_name.split('/')[-1]
     
-    directory = os.path.join('data', sub_folder)
+    directory = os.path.dirname(os.path.abspath(__file__))
+    directory = os.path.join(directory, sub_folder)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -18,6 +19,6 @@ def download_and_setup_dataset(dataset_name):
 
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
-        file_paths.append(file_path)
+        file_paths.append(os.path.abspath(file_path))
         
     return file_paths
