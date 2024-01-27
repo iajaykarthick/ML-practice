@@ -6,7 +6,7 @@ def download_and_setup_dataset(dataset_name):
     sub_folder = dataset_name.split('/')[-1]
     
     directory = os.path.dirname(os.path.abspath(__file__))
-    directory = os.path.join(directory, sub_folder)
+    directory = os.path.join(directory, 'data', sub_folder)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
