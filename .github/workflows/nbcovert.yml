@@ -33,9 +33,6 @@ jobs:
             jupyter nbconvert --to html "$notebook" --output "docs/$html_path"
           done
 
-      - name: Run write_to_index.py
-        run: python write_to_index.py
-
       - name: Commit and push HTML files
         run: |
           git config --local user.email "action@github.com"
