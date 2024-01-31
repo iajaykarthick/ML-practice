@@ -14,10 +14,8 @@ def process_notebooks(current_dir):
     for item in os.listdir(current_dir):
         item_path = os.path.join(current_dir, item)
         if os.path.isdir(item_path):
-            
             if '.ipynb_checkpoints' in item_path:
                 continue
-            
             # Recursively process subdirectories
             process_notebooks(item_path)
         elif item_path.endswith('.ipynb'):
