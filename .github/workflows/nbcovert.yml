@@ -24,16 +24,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install nbconvert
 
-      - name: Convert Notebooks to HTML
+      - name: Convert Notebooks to HTML and Preserve Folder Structure
         run: |
-          mkdir -p docs
-          find . -name '*.ipynb' -exec jupyter nbconvert --to html {} \;
-          find . -name '*.html' -exec mv {} docs/ \;
+          while IFS= read -r notebook; do
+            html_path="${notebook%.ipynb}.html"
+            dir_path=$(dirname "$html_path")
+            mkdir -p "docs/$dir_path"
+            jupyter nbconvert --to html "$notebook" --output-dir "docs/$dir_path"
+          done < <(find . -name '*.ipynb')
 
       - name: Commit and push HTML files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add docs/*.html
+          git add docs/
           git commit -m "Update HTML files" -a || echo "No changes to commit"
           git push
