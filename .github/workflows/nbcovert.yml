@@ -1,4 +1,4 @@
-name: Convert Jupyter Notebooks to HTML
+name: Convert Jupyter Notebooks to HTML files
 
 on:
   push:
