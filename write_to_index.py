@@ -26,6 +26,7 @@ def create_link_list(directory, relative_path=''):
     html_list += '</ul>\n'
     return html_list
 
+
 # Create the HTML content for the index file
 index_html_content = f'''<!DOCTYPE html>
 <html lang="en">
