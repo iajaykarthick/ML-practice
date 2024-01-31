@@ -19,19 +19,22 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install nbconvert
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install nbconvert
+          pip install nbconvert beautifulsoup4
 
       - name: Convert Notebooks to HTML and Preserve Folder Structure
         run: |
-          while IFS= read -r notebook; do
+          find . -name '*.ipynb' | while read notebook; do
             html_path="${notebook%.ipynb}.html"
             dir_path=$(dirname "$html_path")
             mkdir -p "docs/$dir_path"
-            jupyter nbconvert --to html "$notebook" --output-dir "docs/$dir_path"
-          done < <(find . -name '*.ipynb')
+            jupyter nbconvert --to html "$notebook" --output "docs/$html_path"
+          done
+
+      - name: Run write_to_index.py
+        run: python write_to_index.py
 
       - name: Commit and push HTML files
         run: |
