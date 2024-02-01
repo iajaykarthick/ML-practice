@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>overview</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>decision_tree_basic_pure_py</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7477,120 +7477,942 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=50bb8e10">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><a href="../../../../index.html">Back to Index</a></p>
+<p><a href="../../../../../index.html">Back to Index</a></p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cc742312">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Tree based methods are algorithms that  segement the predictor space into a series of homogeneous, non-overlapping regions and and predict the average or majority outcome for each region.</p>
+<h2 id="Decision-Tree">Decision Tree<a class="anchor-link" href="#Decision-Tree">¶</a></h2>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=42dbc7cc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Workflow for Decision Tree Classifier:</p>
+<ol>
+<li>Data Preparation:</li>
+</ol>
 <ul>
-<li>Homogeneous regions: the regions have a high degree of similarity or purity in terms of the outcome variable. For example,<ul>
-<li>in a classification problem, a homogeneous region would have mostly observations from one class,</li>
-<li>in a regression problem, a homogeneous region would have a low variance of the outcome values.</li>
+<li>Load the data, ensuring it's in a suitable format (e.g., list of lists).</li>
+<li>Identify the feature columns and the target column (class label).</li>
 </ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<ol start="2">
+<li>Building the Tree:</li>
+</ol>
 <ul>
-<li>Non-overlapping regions: the regions that do not share any common points.<ul>
-<li>Each point in feature space belongs to exactly one region and there is no ambiguity or overlap between the regions.</li>
+<li>Recursive Function build_tree(rows, header):<ul>
+<li>Base Case:<ul>
+<li>If information gain is 0 (no further meaningful splits), create a Leaf node with majority class prediction.</li>
+</ul>
+</li>
+<li>Otherwise:<ul>
+<li>Find the best question to split the data using find_best_split(rows, header).</li>
+<li>Partition the data into true and false branches based on the question.</li>
+<li>Recursively build subtrees for both branches.</li>
+<li>Construct a DecisionNode with the question, true branch, and false branch.</li>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
+<ol start="3">
+<li>Making Predictions:</li>
+</ol>
+<ul>
+<li>Function <code>classify(row, node)</code>:<ul>
+<li>Base Case:<ul>
+<li>If a Leaf node is reached, return its predictions.</li>
+</ul>
+</li>
+<li>Otherwise:<ul>
+<li>Evaluate the Question at the current node.</li>
+<li>Recursively classify the row based on the answer (true or false branch).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>Additional Functions:</li>
+</ol>
+<ul>
+<li><code>unique_vals(rows, col)</code>: Returns unique values in a column.</li>
+<li><code>class_counts(rows, class_index=-1)</code>: Counts class occurrences in a dataset.</li>
+<li><code>numeric(value)</code>: Checks if a value is numeric.</li>
+<li><code>gini(rows)</code>: Calculates Gini impurity of a dataset.</li>
+<li><code>info_gain(left, right, current_uncertainity)</code>: Calculates information gain.</li>
+<li><code>find_best_split(rows, header)</code>: Finds the best question to split the data.</li>
+<li><code>print_tree(node, spacing="")</code>: Visualizes the tree structure in text format.</li>
+<li><code>print_predictions(counts)</code>: Prints class probabilities.</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b942a95b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">training_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">'Green'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'Apple'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Yellow'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'Apple'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Red'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Grape'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Red'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Grape'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Yellow'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'Lemon'</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0d5f5ab2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'color'</span><span class="p">,</span> <span class="s1">'diameter'</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=bef15cf2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">unique_vals</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=568173a3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">class_counts</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">class_index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">class_index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c59de84c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">class_counts</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>{'Apple': 2, 'Grape': 2, 'Lemon': 1}</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8f1c37c9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">is_numeric</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1e462697">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Question</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">column</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        
+    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">example</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">example</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">is_numeric</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">val</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="s2">"=="</span>
+        <span class="k">if</span> <span class="n">is_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="s2">"&gt;="</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Is </span><span class="si">{</span><span class="n">header</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">condition</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">?"</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a1a12c7d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">match_value</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">question</span> <span class="o">=</span> <span class="n">Question</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">match_value</span><span class="p">)</span>
+<span class="n">question</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">training_data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>False</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=69cbdef3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+    <span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">question</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="n">true_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">false_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ecb3cb20">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Types-of-Tree-Based-Models">Types of Tree-Based Models<a class="anchor-link" href="#Types-of-Tree-Based-Models">¶</a></h2><h3 id="Decision-Trees-(Individual-Tree)">Decision Trees (Individual Tree)<a class="anchor-link" href="#Decision-Trees-(Individual-Tree)">¶</a></h3><ul>
-<li><strong>Description</strong>: The simplest form of tree-based models.</li>
-<li><strong>Functionality</strong>: Creates a tree-like model of decisions. Each internal node signifies a test on a feature, branches represent outcomes of these tests, and leaf nodes denote a class label (for classification) or a value (for regression).</li>
-</ul>
-<p><a href="decision_tree/overview.html">decision tree notes</a></p>
-<h3 id="Ensemble-Methods">Ensemble Methods<a class="anchor-link" href="#Ensemble-Methods">¶</a></h3><ul>
-<li><strong>General Idea</strong>: Improve model performance by combining multiple decision trees.</li>
-</ul>
-<h4 id="Bagging-(Bootstrap-Aggregating)">Bagging (Bootstrap Aggregating)<a class="anchor-link" href="#Bagging-(Bootstrap-Aggregating)">¶</a></h4><ul>
-<li><strong>Core Concept</strong>: Reduces variance by averaging multiple decision trees built on bootstrapped datasets.</li>
-<li><strong>Random Forests</strong>:<ul>
-<li><strong>Description</strong>: An ensemble of decision trees, each built on a slightly different data sample.</li>
-<li><strong>Advantages</strong>: Reduces overfitting, improves accuracy, handles high-dimensional spaces well.</li>
-</ul>
-</li>
-</ul>
-<h4 id="Boosting">Boosting<a class="anchor-link" href="#Boosting">¶</a></h4><ul>
-<li><p><strong>Principle</strong>: Combine multiple weak learners sequentially to form a strong learner.</p>
-<h5 id="AdaBoost-(Adaptive-Boosting)">AdaBoost (Adaptive Boosting)<a class="anchor-link" href="#AdaBoost-(Adaptive-Boosting)">¶</a></h5><ul>
-<li><strong>Methodology</strong>: Adjusts the weight of observations based on the previous classification.</li>
-<li><strong>Use Case</strong>: Often used in scenarios where data balance is an issue.</li>
-</ul>
-<h5 id="Gradient-Boosting-Machines-(GBMs)">Gradient Boosting Machines (GBMs)<a class="anchor-link" href="#Gradient-Boosting-Machines-(GBMs)">¶</a></h5><ul>
-<li><strong>Approach</strong>: Focuses on minimizing loss function and adding weak learners using gradient descent.</li>
-</ul>
-<h5 id="XGBoost-(Extreme-Gradient-Boosting)">XGBoost (Extreme Gradient Boosting)<a class="anchor-link" href="#XGBoost-(Extreme-Gradient-Boosting)">¶</a></h5><ul>
-<li><strong>Specialty</strong>: Optimized gradient boosting, known for its performance and speed.</li>
-</ul>
-<h5 id="LightGBM">LightGBM<a class="anchor-link" href="#LightGBM">¶</a></h5><ul>
-<li><strong>Characteristic</strong>: Gradient boosting framework that uses tree-based learning with a focus on efficiency.</li>
-</ul>
-<h5 id="CatBoost">CatBoost<a class="anchor-link" href="#CatBoost">¶</a></h5><ul>
-<li><strong>Feature</strong>: An algorithm with built-in handling of categorical variables.</li>
-</ul>
-</li>
-</ul>
-<h3 id="Hybrid-Methods">Hybrid Methods<a class="anchor-link" href="#Hybrid-Methods">¶</a></h3><ul>
-<li><p><strong>Concept</strong>: Combine different machine learning algorithms for better predictive performance.</p>
-<h5 id="Stacking-(Stacked-Generalization)">Stacking (Stacked Generalization)<a class="anchor-link" href="#Stacking-(Stacked-Generalization)">¶</a></h5><ul>
-<li><strong>Idea</strong>: Integrates predictions from multiple machine learning models using a meta-learner.</li>
-</ul>
-</li>
-</ul>
+<p>Gini Impurity = $1 - \displaystyle\sum_{i-1}^{k} p_i^{2}$</p>
+<p>where k is the number of class labels and $p_i$ is the probability of samples belonging to the class $i$ at a given node</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2e7fc442">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gini</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">class_counts</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    <span class="n">impurity</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>
+        <span class="n">prob_of_label</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+        <span class="n">impurity</span> <span class="o">-=</span> <span class="n">prob_of_label</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">return</span> <span class="n">impurity</span>
+</pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=321b3899">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Calculate <strong>Information Gain</strong> using Gini Impurity in the context of decision tree:</p>
+<p>$$
+\text{Information Gain} = \text{uncertainty} - \left( \frac{|S_{\text{left}}|}{|S|} \times \text{Gini}(S_{\text{left}}) + \frac{|S_{\text{right}}|}{|S|} \times \text{Gini}(S_{\text{right}}) \right)
+$$</p>
+<p>Where:</p>
+<ul>
+<li>$|S_{\text{left}}|$ and $|S_{\text{right}}|$ are the number of samples in the left and right child nodes, respectively.</li>
+<li>$∣S∣$ is the total number of samples at the current node.</li>
+<li>$\text{Gini}(S)$ is the Gini impurity of node $S$.</li>
+</ul>
+<p>It calculates the information gain by subtracting the weighted impurity of two child nodes from the uncertainty(gini impurity here) of the starting node.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=91a67ff9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">info_gain</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">current_uncertainity</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">current_uncertainity</span> <span class="o">-</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">gini</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">gini</span><span class="p">(</span><span class="n">right</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=84648b08">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Current Uncertainity (of root node)</span>
+<span class="n">current_uncertainity</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9d3a1c5a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## How much information do we gain by partitioning on 'Green'?</span>
+<span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">Question</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'Green'</span><span class="p">))</span>
+<span class="n">info_gain</span><span class="p">(</span><span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span><span class="p">,</span> <span class="n">current_uncertainity</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>0.1399999999999999</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bafb1a8c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## How much information do we gain by partitioning on 'Yellow'?</span>
+<span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">Question</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'Yellow'</span><span class="p">))</span>
+<span class="n">info_gain</span><span class="p">(</span><span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span><span class="p">,</span> <span class="n">current_uncertainity</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>0.17333333333333323</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5e489841">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## How much information do we gain by partitioning on 'Red'?</span>
+<span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">Question</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'Red'</span><span class="p">))</span>
+<span class="n">info_gain</span><span class="p">(</span><span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span><span class="p">,</span> <span class="n">current_uncertainity</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>0.37333333333333324</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=989f4a3b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># It looks like we learned more using 'Red' (0.37), than 'Green' (0.14) or 'Yellow' (0.17).</span>
+<span class="c1"># This is because, 'Red' is better at separating 'Apple' from 'Grapes' and less number of mixed-up fruits will end up in either branch.</span>
+
+<span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'Red'</span><span class="p">,</span> <span class="s1">'Green'</span><span class="p">,</span> <span class="s1">'Yellow'</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">Question</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">info_gain</span><span class="p">(</span><span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span><span class="p">,</span> <span class="n">current_uncertainity</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">class_counts</span><span class="p">(</span><span class="n">true_rows</span><span class="p">),</span> <span class="n">class_counts</span><span class="p">(</span><span class="n">false_rows</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Red
+0.37333333333333324
+{'Grape': 2} {'Apple': 2, 'Lemon': 1}
+Green
+0.1399999999999999
+{'Apple': 1} {'Apple': 1, 'Grape': 2, 'Lemon': 1}
+Yellow
+0.17333333333333323
+{'Apple': 1, 'Lemon': 1} {'Apple': 1, 'Grape': 2}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b7054b4a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [60]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_best_split</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Find the best question to ask by iterating over every feature / value and calculating the information gain."""</span>
+    <span class="n">best_gain</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">best_question</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">current_uncertainity</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    <span class="n">n_features</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">])</span> <span class="c1"># Unique values in the column</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">question</span> <span class="o">=</span> <span class="n">Question</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            
+            <span class="c1"># try splitting the dataset</span>
+            <span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">question</span><span class="p">)</span>
+            
+            <span class="c1"># if it doesn't split the dataset, skip it</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">true_rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">false_rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            
+            <span class="c1"># calculate the information gain from this split</span>
+            <span class="n">gain</span> <span class="o">=</span> <span class="n">info_gain</span><span class="p">(</span><span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span><span class="p">,</span> <span class="n">current_uncertainity</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">gain</span> <span class="o">&gt;</span> <span class="n">best_gain</span><span class="p">:</span>
+                <span class="n">best_gain</span><span class="p">,</span> <span class="n">best_question</span> <span class="o">=</span> <span class="n">gain</span><span class="p">,</span> <span class="n">question</span>
+        
+    <span class="k">return</span> <span class="n">best_gain</span><span class="p">,</span> <span class="n">best_question</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8ea9b4aa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [55]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">best_gain</span><span class="p">,</span> <span class="n">best_question</span> <span class="o">=</span> <span class="n">find_best_split</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+<span class="n">best_gain</span><span class="p">,</span> <span class="n">best_question</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[55]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>(0.37333333333333324, Is diameter &gt;= 3?)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=187aba74">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Leaf</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">):</span>       
+        <span class="bp">self</span><span class="o">.</span><span class="n">predictions</span> <span class="o">=</span> <span class="n">class_counts</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e71020a3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">DecisionNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">true_branch</span><span class="p">,</span> <span class="n">false_branch</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">question</span> <span class="o">=</span> <span class="n">question</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">true_branch</span> <span class="o">=</span> <span class="n">true_branch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">false_branch</span> <span class="o">=</span> <span class="n">false_branch</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ba05f85f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [56]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">build_tree</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+    
+    <span class="c1"># Try partitioning the dataset on each of the unique attributes, calculate the information gain, and return the question that produces the highest gain.</span>
+    <span class="n">gain</span><span class="p">,</span> <span class="n">question</span> <span class="o">=</span> <span class="n">find_best_split</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    
+    <span class="c1"># Base case: no further info gain; even the best info gain is 0, we can't split any further.</span>
+    <span class="c1"># Since we can ask no further questions, we'll return a leaf.</span>
+    <span class="k">if</span> <span class="n">gain</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Leaf</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    
+    <span class="c1"># TODO: Negative gain? Even though find_best_split handles negative gain cases, should I check for precision errors?</span>
+    
+    <span class="c1"># If we reach here, we have found a useful feature / value to partition on.</span>
+    <span class="n">true_rows</span><span class="p">,</span> <span class="n">false_rows</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">question</span><span class="p">)</span>
+    
+    <span class="c1"># Recursively build the true branch.</span>
+    <span class="n">true_branch</span> <span class="o">=</span> <span class="n">build_tree</span><span class="p">(</span><span class="n">true_rows</span><span class="p">)</span>
+    
+    <span class="c1"># Recursively build the false branch.</span>
+    <span class="n">false_branch</span> <span class="o">=</span> <span class="n">build_tree</span><span class="p">(</span><span class="n">false_rows</span><span class="p">)</span>
+    
+    <span class="c1"># Return a Question node.</span>
+    <span class="c1"># This records the best feature / value to ask at this point, as well as the branches to follow depending on the answer.</span>
+    <span class="k">return</span> <span class="n">DecisionNode</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">true_branch</span><span class="p">,</span> <span class="n">false_branch</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=de22df3b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">print_tree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="s2">""</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Prints the decision tree in an elegant format."""</span>
+    
+    <span class="c1"># Base case: if we have reached a leaf node</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Leaf</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">spacing</span> <span class="o">+</span> <span class="s2">"Predict:"</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">predictions</span><span class="p">)</span>
+        <span class="k">return</span>
+    
+    <span class="c1"># Print the question at this node</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">spacing</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">question</span><span class="p">))</span>
+    
+    <span class="c1"># Print the branches</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">spacing</span> <span class="o">+</span> <span class="s1">'--&gt; True:'</span><span class="p">)</span>
+    <span class="n">print_tree</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">true_branch</span><span class="p">,</span> <span class="n">spacing</span> <span class="o">+</span> <span class="s2">"  "</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">spacing</span> <span class="o">+</span> <span class="s1">'--&gt; False:'</span><span class="p">)</span>
+    <span class="n">print_tree</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">false_branch</span><span class="p">,</span> <span class="n">spacing</span> <span class="o">+</span> <span class="s2">"  "</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=44f71735">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [59]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_tree</span> <span class="o">=</span> <span class="n">build_tree</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+<span class="n">print_tree</span><span class="p">(</span><span class="n">my_tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Is diameter &gt;= 3?
+--&gt; True:
+  Is color == Yellow?
+  --&gt; True:
+    Predict: {'Apple': 1, 'Lemon': 1}
+  --&gt; False:
+    Predict: {'Apple': 1}
+--&gt; False:
+  Predict: {'Grape': 2}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ead9bc80">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [61]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_tree</span> <span class="o">=</span> <span class="n">build_tree</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+<span class="n">print_tree</span><span class="p">(</span><span class="n">my_tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Is color == Red?
+--&gt; True:
+  Predict: {'Grape': 2}
+--&gt; False:
+  Is color == Yellow?
+  --&gt; True:
+    Predict: {'Apple': 1, 'Lemon': 1}
+  --&gt; False:
+    Predict: {'Apple': 1}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=966a6051">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">training_data</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[62]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>[['Green', 3, 'Apple'],
+ ['Yellow', 3, 'Apple'],
+ ['Red', 1, 'Grape'],
+ ['Red', 1, 'Grape'],
+ ['Yellow', 3, 'Lemon']]</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2c5fe074">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    
+    <span class="c1"># Base case: we've reached a leaf</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Leaf</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">predictions</span>
+    
+    
+    <span class="c1"># Decide whether to follow the true-branch or the false-branch</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">question</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">classify</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">true_branch</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">classify</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">false_branch</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=470709b9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="n">training_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">my_tree</span><span class="p">),</span> <span class="s2">"True label is "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[66]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>({'Apple': 1}, 'True label is Apple')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0d2cd825">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=fa221cc4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">print_predictions</span><span class="p">(</span><span class="n">counts</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">probs</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">label</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">total</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"%"</span>
+        
+    <span class="k">return</span> <span class="n">probs</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0ecf545a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [74]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Confidence is lower</span>
+<span class="n">print_predictions</span><span class="p">(</span><span class="n">classify</span><span class="p">(</span><span class="n">training_data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">my_tree</span><span class="p">)),</span> <span class="s2">"True label is "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[74]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>({'Apple': '50.0%', 'Lemon': '50.0%'}, 'True label is Apple')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b84b3554">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [75]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate</span>
+<span class="n">testing_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">'Green'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'Apple'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Yellow'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'Apple'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Red'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'Grape'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Red'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Grape'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'Yellow'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'Lemon'</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7f10f9cd">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [76]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">testing_data</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Actual: </span><span class="si">%s</span><span class="s2">. Predicted: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">print_predictions</span><span class="p">(</span><span class="n">classify</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">my_tree</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Actual: Apple. Predicted: {'Apple': '100.0%'}
+Actual: Apple. Predicted: {'Apple': '50.0%', 'Lemon': '50.0%'}
+Actual: Grape. Predicted: {'Grape': '100.0%'}
+Actual: Grape. Predicted: {'Grape': '100.0%'}
+Actual: Lemon. Predicted: {'Apple': '50.0%', 'Lemon': '50.0%'}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=00aac0d8">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
