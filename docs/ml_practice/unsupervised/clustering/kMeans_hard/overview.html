@@ -7483,52 +7483,51 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="K-Means-Hard-Clustering-Algorithm">K-Means Hard Clustering Algorithm<a class="anchor-link" href="#K-Means-Hard-Clustering-Algorithm">¶</a></h1><p>It aims to partition $n$ observations into $k$ clusters in which each observation belongs to the cluster with the nearest mean, serving as a prototype of the cluster.</p>
-<h2 id="Algorithm-Overview">Algorithm Overview<a class="anchor-link" href="#Algorithm-Overview">¶</a></h2><p>The algorithm works iteratively to assign each data point to one of K groups based on the features that are provided. Data points are clustered based on feature similarity.</p>
-<h3 id="Steps-of-the-K-Means-Algorithm">Steps of the K-Means Algorithm<a class="anchor-link" href="#Steps-of-the-K-Means-Algorithm">¶</a></h3><ol>
-<li><strong>Initialization</strong>: Start by selecting $k$ initial centroids, where $k$ is a user-defined number of desired clusters.</li>
-<li><strong>Assignment</strong>: Assign each observation to the nearest centroid to get $k$ clusters.</li>
-<li><strong>Update</strong>: Calculate the new centroids (mean) of the observations in the new clusters.</li>
-<li><strong>Repeat</strong>: Repeat the assignment and update steps until the centroids do not change significantly, or a maximum number of iterations is reached.</li>
-</ol>
-<h3 id="Formulas">Formulas<a class="anchor-link" href="#Formulas">¶</a></h3><ul>
-<li><p><strong>Euclidean Distance</strong> (used to assign observations to the nearest centroid):</p>
-<p>$$d(\mathbf{x}, \mathbf{y}) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}$$</p>
-<p>Where $d$ is the distance between two points $x$ and $y$ with $n$ dimensions.</p>
-</li>
-<li><p><strong>Centroid Update</strong> (new centroid calculation of a cluster):</p>
-<p>$$\mu_j = \frac{1}{|C_j|} \sum_{i=1}^{|C_j|} x_i$$</p>
-<p>Where $\mu_j$ is the new centroid of cmluster $j$, $C_j$ is the set of all points assigned to cluster $j$, and $x_i$ are the points in the cluster.</p>
-</li>
-</ul>
-<h2 id="Initialization-Methods">Initialization Methods<a class="anchor-link" href="#Initialization-Methods">¶</a></h2><p>The performance of K-Means is significantly influenced by the initial placement of the centroids. Therefore, several methods have been developed to initialize centroids:</p>
+<h3 id="KMeans-Hard-Clustering-Algorithm">KMeans Hard Clustering Algorithm<a class="anchor-link" href="#KMeans-Hard-Clustering-Algorithm">¶</a></h3><p>The KMeans hard clustering algorithm is to identify clusters within an unlabeled dataset. Each cluster is defined by its centroid (center point), and each data point is assigned to the nearest centroid. The "hard" in hard clustering indicates that each data point is assigned to exactly one cluster.</p>
+<p><strong>Components of KMeans:</strong></p>
+<p><em>Number of Points in a Cluster:</em> $(N_k =  \sum_{n=1}^{N} I[z_n=k])$</p>
+<p><em>Indicator function:</em>
+$
+I[z_n=k] =
+    \begin{cases}
+        1 &amp; z_n=k \\
+        0 &amp; z_n≠k 
+    \end{cases}
+$</p>
+<p><em>Centroid or Mean of a Cluster:</em> $(\mu_k = \frac{1}{N_k} \sum_{n=1}^{N} I[z_n = k] x_n)$</p>
+<p><em>Variance of a Cluster:</em> $(\sigma_k^2 = \frac{1}{N_k} \sum_{n=1}^{N} I[z_n = k] ||x_n - \mu_k||^2)$</p>
+<p><strong>K-means Objective Function</strong></p>
+<p>The K-Means objective function $(L(\mu, z))$ accounts for both the cluster centroids $(\mu)$ and the data point assignments $(z)$. It can be expressed as:</p>
+<p>$$
+L(\mu, z) = \sum_{k=1}^{K} N_k \sigma_k^2
+= \sum_{k=1}^{K} \sum_{n=1}^{N} I[z_n = k] || x_n - \mu_k ||^2
+$$</p>
+<p>The goal is to minimize this loss with respect to both centroids and assignments, which can be formally stated as:</p>
+<p>$$
+\min_{\mu, z} L(\mu, z)
+$$</p>
+<p>Given the combinatorial nature of the problem, with $(K^N)$ possible combinations of assignments, solving this via brute force is not computationally feasible.</p>
+<p><strong>Algorithm steps:</strong></p>
 <ol>
-<li><p><strong>Random Initialization</strong>: Centroids are randomly selected from the dataset. While simple, this method can result in poor convergence if centroids are initialized too close to each other.</p>
+<li><p><strong>Initialization</strong>: Select <code>K</code> initial centroids (center point of the clusters). This can be done in several ways such as randomly, selecting the farthest points, or using the kmeans++ method.</p>
 </li>
-<li><p><strong>Forgy Method</strong>: Randomly choose $k$ observations from the dataset and use these as the initial centroids. Similar to random initialization but ensures centroids are actual data points.</p>
-</li>
-<li><p><strong>K-Means++</strong>: Chooses initial centroids in a way that spreads them out over the dataset. The first centroid is random, and subsequent centroids are chosen from the remaining data points with probabilities proportional to their squared distance from the nearest existing centroid. This often leads to better clustering.</p>
-</li>
-<li><p><strong>Random Partition</strong>: Assign each data point to a random cluster and then proceed to calculation of the centroid of each cluster.</p>
+<li><p><strong>Expectation-Maximization(EM) Steps</strong>:</p>
+<ul>
+<li>Expectation (E-step): Determine the membership of each data point by assigning it to the cluster whose centroid is closest, based on the chosen distance or similarity metric. This step focuses on finding the best cluster assignments based on the current positions of the centroid, effectively minimizing $L(\mu, z)$ with respect to $z$ while keeping $\mu$ fixed.</li>
+<li>Maximization (M-step): Recalculate the centroids of each cluster as the mean of all data points currently assigned to that cluster. This effectively updates the membership criteria for the next E-step. This step focuses on finding the best positions for the centroid given the current cluster assignment, effectively minimizing $L(\mu, z)$ with respect to $\mu$, keeping $z$ fixed to the assignments determined in the previous E-step.</li>
+</ul>
 </li>
 </ol>
-<h3 id="K-Means++-Initialization-Steps">K-Means++ Initialization Steps<a class="anchor-link" href="#K-Means++-Initialization-Steps">¶</a></h3><ol>
-<li>Choose one center uniformly at random from among the data points.</li>
-<li>For each data point $x$, compute $D(x)$, the distance between $x$ and the nearest center that has already been chosen.</li>
-<li>Choose one new data point at random as a new center, using a weighted probability distribution where a point $x$ is chosen with probability proportional to $D(x)^2$.</li>
-<li>Repeat Steps 2 and 3 until $k$ centers have been chosen.</li>
-<li>Now that the initial centers are chosen, proceed with the standard k-means clustering algorithm.</li>
+<p>Together, the E-step and M-step iteratively improve the cluster assignments and the centroid positions, thus minimizing the overall objective function $L(\mu, z)$.</p>
+<ol start="3">
+<li><strong>Termination Criteria</strong>:
+The algorithm iterates between E and M steps until:<ul>
+<li>The centroids do not change significantly between iterations.</li>
+<li>The decrease in the objective function from one iteration to the next is below a certain threshold (i.e., the objective function converges)</li>
+<li>A predefined number of iterations is reached.</li>
+</ul>
+</li>
 </ol>
-<h2 id="Pros-and-Cons-of-K-Means">Pros and Cons of K-Means<a class="anchor-link" href="#Pros-and-Cons-of-K-Means">¶</a></h2><h3 id="Pros">Pros<a class="anchor-link" href="#Pros">¶</a></h3><ul>
-<li>Simple to understand and implement.</li>
-<li>Efficient in terms of computational cost, typically $O(nkdi)$, where $n$ is the number of data points, $k$ is the number of clusters, $d$ is the dimensionality of the data points, and $i$ is the number of iterations.</li>
-</ul>
-<h3 id="Cons">Cons<a class="anchor-link" href="#Cons">¶</a></h3><ul>
-<li>The need to specify $k$ in advance.</li>
-<li>Sensitivity to the initial choice of centroids.</li>
-<li>Difficulty in clustering data of varying sizes and density.</li>
-</ul>
-<p>K-Means hard clustering is a powerful tool for data analysis, but its effectiveness can depend on the chosen initialization method and the nature of the dataset.</p>
 </div>
 </div>
 </div>
