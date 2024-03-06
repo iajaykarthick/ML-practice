@@ -7537,14 +7537,15 @@ $$</p>
 <li><p><strong>Translate the Origin</strong>: Compute the vector $\vec{PZ} = \vec{P} - \vec{Z}$ to represent the position of $P$ relative to $Z$.</p>
 </li>
 <li><p><strong>Calculate the Projection</strong>: Apply the projection formula in this new space:</p>
-<p>$$\text{proj}_{\vec{v}}(\vec{PZ}) = \frac{\vec{PZ} \cdot \vec{v}}{\vec{v} \cdot \vec{v}} \vec{v}$$</p>
-<p>This calculates the projection of $P$ onto the line, treating $Z$ as the origin.</p>
-</li>
-<li><p><strong>Translate Back</strong>: Add $\vec{Z}$ to the result to return to the original coordinate system:</p>
-<p>$$\text{proj}_{\vec{v},Z}(\vec{P}) = \vec{Z} + \frac{\vec{PZ} \cdot \vec{v}}{\vec{v} \cdot \vec{v}} \vec{v}$$</p>
-<p>$\text{proj}_{\vec{v},Z}(\vec{P})$ is the projection of $P$ onto the line defined by vector $\vec{v}$ starting from point $Z$.</p>
 </li>
 </ol>
+<p>$$\text{proj}_{\vec{v}}(\vec{PZ}) = \frac{\vec{PZ} \cdot \vec{v}}{\vec{v} \cdot \vec{v}} \vec{v}$$</p>
+<p>This calculates the projection of $P$ onto the line, treating $Z$ as the origin.</p>
+<ol start="3">
+<li><strong>Translate Back</strong>: Add $\vec{Z}$ to the result to return to the original coordinate system:</li>
+</ol>
+<p>$$\text{proj}_{\vec{v},Z}(\vec{P}) = \vec{Z} + \frac{\vec{PZ} \cdot \vec{v}}{\vec{v} \cdot \vec{v}} \vec{v}$$</p>
+<p>$\text{proj}_{\vec{v},Z}(\vec{P})$ is the projection of $P$ onto the line defined by vector $\vec{v}$ starting from point $Z$.</p>
 <h2 id="Significance">Significance<a class="anchor-link" href="#Significance">¶</a></h2><p>This concept is fundamental in understanding operations like PCA, where projecting data points onto lines (or planes) defined by principal components helps reduce dimensionality while preserving variance. The technique demonstrates the flexibility and power of vector mathematics in simplifying and solving complex spatial problems by shifting perspectives and coordinate systems.</p>
 </div>
 </div>
