@@ -2,6 +2,8 @@
 - Aims to transform the original features of a dataset into a new set of **Uncorrelated variables** called **Principal Components** with the objective of retaining the most important information while discarding the least important.
   - This process effectively removes redundancy in the data and helps in simplifying the representation of the dataset.
 
+Note: PCA is effective in reducing correlation among the principal components, especially when a significant portion of the variance is captured by the retained components. However, it's essential to recognize that the degree of correlation reduction may vary depending on the data characteristics and the number of principal components retained.
+
 ![pca 2d showing redundancy removal](images/pca_2d.png)
 
 ![covariance matrices](images/covar_pca_2d.png)
@@ -31,3 +33,4 @@
 
 - **Elongation**: The shape of the ellipse indicates the strength of the original correlation. A highly elongated ellipse means a strong correlation.
 - **Dimensionality Reduction**: In practice, the first few principal components often capture most of the variation, allowing you to reduce the dimensionality of your data.
+
