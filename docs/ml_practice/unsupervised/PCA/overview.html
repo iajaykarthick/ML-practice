@@ -7605,6 +7605,73 @@ a.anchor-link {
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>1. Figuring out where the original data points should be placed along the new axis.</strong></p>
+<p>The objective is to minimize the sum of squared errors (SSE) between the original data points and their projections onto the new axis. Let's denote:</p>
+<ul>
+<li>$ \mathbf{x}_i $ as the original data vector.</li>
+<li>$ \mathbf{v} $ as the unit vector representing the direction of the new axis.</li>
+<li>$ \mathbf{a} $ as the offset or position of the new axis.</li>
+</ul>
+<p>The projection of $ \mathbf{x}_i $ onto $ \mathbf{v} $ can be represented as:
+$$ \mathbf{p}_i = \text{proj}_{\mathbf{v}}(\mathbf{x}_i) = \frac{(\mathbf{x}_i - \mathbf{a}) \cdot \mathbf{v}}{\|\mathbf{v}\|^2} \cdot \mathbf{v} $$</p>
+<p>Now, let's compute the squared error between $ \mathbf{x}_i $ and $ \mathbf{p}_i $:
+$$ \text{SSE}_i = \| \mathbf{x}_i - \mathbf{p}_i \|^2 $$</p>
+<p>Substituting the expression for $ \mathbf{p}_i $:
+$$ \text{SSE}_i = \| \mathbf{x}_i - \frac{(\mathbf{x}_i - \mathbf{a}) \cdot \mathbf{v}}{\|\mathbf{v}\|^2} \cdot \mathbf{v} \|^2 $$</p>
+<p>Expanding and rearranging terms:
+$$ \text{SSE}_i = \| \mathbf{x}_i \|^2 - \frac{((\mathbf{x}_i - \mathbf{a}) \cdot \mathbf{v})^2}{\|\mathbf{v}\|^2} $$</p>
+<p>To minimize $ \text{SSE}_i $, we need to minimize $ ((\mathbf{x}_i - \mathbf{a}) \cdot \mathbf{v})^2 $.</p>
+<p>The "sweet spot" occurs when $ (\mathbf{x}_i - \mathbf{a}) $ and $ \mathbf{v} $ are perpendicular (90 degrees), making the dot product $ ((\mathbf{x}_i - \mathbf{a}) \cdot \mathbf{v}) $ zero. This makes the projection term zero, leaving the error vector as simply $ \mathbf{e}_i = \mathbf{x}_i $. Since this is the original vector itself, it has the smallest possible magnitude.</p>
+<p>Therefore, projecting data points perpendicular to the line formed by the new axis minimizes reconstruction errors.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>2. Deciding where this new axis should be positioned within the current coordinate system. (At this point, we only know the direction of the new axis.)</strong></p>
+<p>The new line (axis) should pass through the mean of the original data points in order to achieve the minimum possible SSE.</p>
+<p><strong>Proof:</strong></p>
+<p>Given:</p>
+<ul>
+<li>$ \mathbf{X} $ as the original data matrix.</li>
+<li>$ \mathbf{v} $ as the unit vector representing the direction of the new axis.</li>
+<li>$ \mathbf{a} $ as the position of the new axis (to be determined).</li>
+</ul>
+<p>To minimize the sum of squared errors (SSE), we need to minimize the distance between each data point and its projection onto the new axis.</p>
+<p>The projection of a data point $ \mathbf{x}_i $ onto the new axis can be expressed as:
+$$ \mathbf{p}_i = \mathbf{a} + (\mathbf{x}_i - \mathbf{a}) \cdot \mathbf{v} \cdot \mathbf{v}^T $$</p>
+<p>The sum of squared errors (SSE) for all data points can be written as:
+$$ \text{SSE} = \sum_{i=1}^{n} \| \mathbf{x}_i - \mathbf{p}_i \|^2 $$</p>
+<p>To minimize SSE, we take the derivative of SSE with respect to $ \mathbf{a} $ and set it to zero.</p>
+<p>$$
+\frac{\partial \text{SSE}}{\partial \mathbf{a}} = -2 \sum_{i=1}^{n} (\mathbf{x}_i - \mathbf{a}) \cdot \mathbf{v} \cdot \mathbf{v}^T = 0
+$$</p>
+<p>Solving for $ \mathbf{a} $:
+$$
+\sum_{i=1}^{n} (\mathbf{x}_i - \mathbf{a}) = 0
+$$
+$$
+\sum_{i=1}^{n} \mathbf{x}_i - n \cdot \mathbf{a} = 0
+$$
+$$
+\mathbf{a} = \frac{1}{n} \sum_{i=1}^{n} \mathbf{x}_i
+$$</p>
+<p>Thus, the position of the new axis that minimizes SSE is the mean of the original data points. Therefore, the new axis should pass through the mean of the original data points to achieve the minimum possible SSE.</p>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7718,9 +7785,9 @@ a.anchor-link {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="dc5b4d7d-0268-4768-bd3c-b787e1c0687b" tabindex="0">
+<div class="jp-RenderedJavaScript jp-OutputArea-output" data-mime-type="application/javascript" id="4cfe9b3a-7165-4419-a456-ba9f43e3cdc6" tabindex="0">
 <script type="text/javascript">
-var element = document.getElementById('dc5b4d7d-0268-4768-bd3c-b787e1c0687b');
+var element = document.getElementById('4cfe9b3a-7165-4419-a456-ba9f43e3cdc6');
 /* Put everything inside the global mpl namespace */
 /* global mpl */
 window.mpl = {};
